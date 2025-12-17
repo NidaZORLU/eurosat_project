@@ -10,7 +10,7 @@ from .utils import train_one_epoch, eval_one_epoch
 
 
 def main():
-    set_seed()
+    # set_seed()
 
     print(f"\n🚀 Geliştirilmiş baseline eğitimi başlıyor | Cihaz: {DEVICE}\n")
 
@@ -32,7 +32,7 @@ def main():
         patience=2,
     )
 
-    es_patience = 5
+    es_patience = 3
     es_counter = 0
     best_val_loss = float("inf")
     best_val_acc = 0.0
