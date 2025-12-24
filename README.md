@@ -55,7 +55,7 @@ Validation and test sets use no augmentation.
     
     5.2 Run Improved Training (27K dataset)
 
-    python -m src.train_improved | tee results/improved_27k_log.txt
+RUN ******** python -m src.train_improved | tee results/improved_27k_log.txt
 
     5.3 Output
         Training stops automatically if validation loss does not improve
@@ -66,7 +66,7 @@ Validation and test sets use no augmentation.
 6. Plotting Loss and Accuracy Graphs
 Generate training curves:
 
-python -m src.plot_logs
+GRAPHS ****** python -m src.plot_logs
 
 7. How to Demonstrate in Class 
 
@@ -93,4 +93,4 @@ Performance improvement
 8. Conclusion
 This project demonstrates how controlled CNN training, proper dataset splitting, and regularization techniques such as early stopping significantly improve generalization performance on satellite image classification tasks.
 
-
+run--- python app.py
