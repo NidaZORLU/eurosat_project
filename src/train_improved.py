@@ -10,7 +10,7 @@ from .utils import train_one_epoch, eval_one_epoch
 
 
 def main():
-    # set_seed()
+ 
 
     print(f"\n🚀 Geliştirilmiş baseline eğitimi başlıyor | Cihaz: {DEVICE}\n")
 

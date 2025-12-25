@@ -8,19 +8,14 @@ from .models_baseline import SimpleCNN
 
 
 def load_label_names():
-    """
-    EuroSAT label isimlerini HuggingFace metadata'sından çeker.
-    Sadece feature bilgisi için küçük bir split yeterli.
-    """
+    
     ds_info = load_dataset("blanchon/EuroSAT_RGB", split="train[:1]")
     label_names = ds_info.features["label"].names
     return label_names
 
 
 def load_trained_model():
-    """
-    Önce improved modeli dene, yoksa baseline'a düş.
-    """
+
     model = SimpleCNN().to(DEVICE)
 
     tried_paths = ["baseline_improved_best.pth", "baseline_best.pth"]

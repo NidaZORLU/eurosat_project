@@ -9,7 +9,7 @@ from .utils import train_one_epoch, eval_one_epoch
 
 
 def main():
-    # Reproducibility ayarları
+    
     set_seed()
 
     print(f"\n🚀 Eğitim başlıyor | Kullanılan cihaz: {DEVICE}\n")
@@ -20,7 +20,7 @@ def main():
 
     criterion = nn.CrossEntropyLoss()
 
-    # Optimizer L2
+    
     optimizer = optim.Adam(
         model.parameters(),
         lr=LEARNING_RATE,
@@ -29,7 +29,7 @@ def main():
 
     best_val_acc = 0.0
 
-    # eğitimler burda döngüde
+
     for epoch in range(1, NUM_EPOCHS + 1):
         print(f"\n====== Epoch {epoch}/{NUM_EPOCHS} ======\n")
 
@@ -49,7 +49,7 @@ def main():
             torch.save(model.state_dict(), "baseline_best.pth")
             print("\n💾 Yeni en iyi model kaydedildi: baseline_best.pth\n")
 
-    # test aşaması
+
     print("\n🔍 En iyi modeli test seti ile değerlendiriyoruz...\n")
     model.load_state_dict(torch.load("baseline_best.pth", map_location=DEVICE))
 

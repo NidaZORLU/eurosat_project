@@ -9,9 +9,6 @@ from src.models_baseline import SimpleCNN
 from src.config import IMAGE_SIZE
 
 
-# -----------------------------
-# 1) SINIF İSİMLERİ
-# -----------------------------
 CLASS_NAMES = [
     "AnnualCrop",
     "Forest",
@@ -26,11 +23,9 @@ CLASS_NAMES = [
 ]
 
 
-# -----------------------------
-# 2) MODEL YÜKLEME
-# -----------------------------
+
 def load_model():
-    # train_improved.py'deki ile aynı mimari
+
     model = SimpleCNN()
     state_dict = torch.load("baseline_improved_best.pth", map_location="cpu")
     model.load_state_dict(state_dict)
@@ -41,9 +36,7 @@ def load_model():
 model = load_model()
 
 
-# -----------------------------
-# 3) HUGGINGFACE'DEN EUROSAT_RGB YÜKLEME
-# -----------------------------
+
 try:
     print("✅ EuroSAT_RGB HuggingFace dataseti yükleniyor...")
     hf_ds = load_dataset("blanchon/EuroSAT_RGB", split="train")
@@ -54,9 +47,7 @@ except Exception as e:
 
 
 def load_random_hf_image():
-    """
-    HuggingFace 'blanchon/EuroSAT_RGB' datasetinden rastgele bir görsel döndürür.
-    """
+
     if hf_ds is None:
         raise gr.Error(
             "HuggingFace EuroSAT_RGB datasetine erişilemiyor. "
@@ -65,14 +56,11 @@ def load_random_hf_image():
 
     idx = random.randint(0, len(hf_ds) - 1)
     sample = hf_ds[idx]
-    img = sample["image"]  # HuggingFace zaten PIL Image döndürüyor
+    img = sample["image"]  
     return img
 
 
-# -----------------------------
-# 4) GÖRÜNTÜ TRANSFORM
-#    (dataset_eurosat.py ile bire bir aynı)
-# -----------------------------
+
 transform = transforms.Compose([
     transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
     transforms.ToTensor(),
@@ -83,9 +71,6 @@ transform = transforms.Compose([
 ])
 
 
-# -----------------------------
-# 5) TAHMİN FONKSİYONU
-# -----------------------------
 def predict(image: Image.Image):
     if image is None:
         raise gr.Error("Önce bir görsel yükle veya HuggingFace butonuna bas.")
@@ -102,9 +87,7 @@ def predict(image: Image.Image):
     return pred_class, prob_dict
 
 
-# -----------------------------
-# 6) GRADIO ARAYÜZÜ (BLOCKS)
-# -----------------------------
+
 with gr.Blocks() as demo:
     gr.Markdown("# EuroSAT LULC Sınıflandırma (Improved Baseline CNN)")
     gr.Markdown(
@@ -122,14 +105,14 @@ with gr.Blocks() as demo:
     pred_label = gr.Label(label="Tahmin Edilen Sınıf")
     probs_label = gr.Label(label="Sınıf Olasılıkları")
 
-    # HF butonu: EuroSAT_RGB'den rastgele görsel getir
+
     hf_btn.click(
         fn=load_random_hf_image,
         inputs=None,
         outputs=image_input,
     )
 
-    # Tahmin butonu
+
     predict_btn.click(
         fn=predict,
         inputs=image_input,

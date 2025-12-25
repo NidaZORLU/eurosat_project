@@ -10,9 +10,7 @@ FIGURES.mkdir(exist_ok=True)
 def parse_log(path: Path):
     text = path.read_text(encoding="utf-8", errors="ignore")
 
-    # Örnek satırlar:
-    # Train Loss: 0.8712 | Train Acc: 0.6943
-    # Val   Loss: 0.7374 | Val   Acc: 0.7333
+   
     train_re = re.compile(r"Train\s+Loss:\s*([0-9.]+)\s*\|\s*Train\s+Acc:\s*([0-9.]+)")
     val_re   = re.compile(r"Val\s+Loss:\s*([0-9.]+)\s*\|\s*Val\s+Acc:\s*([0-9.]+)")
     epoch_re = re.compile(r"Epoch\s+(\d+)/(\d+)")
@@ -21,9 +19,8 @@ def parse_log(path: Path):
     train_loss, train_acc = [], []
     val_loss, val_acc = [], []
 
-    # epoch sayısını yakalayalım (log formatın 1/3 veya 1/10 olabilir)
     epoch_lines = epoch_re.findall(text)
-    # epoch satırları yoksa yine de train/val çiftlerinden epoch üretiriz
+    
 
     t = train_re.findall(text)
     v = val_re.findall(text)
@@ -41,8 +38,8 @@ def parse_log(path: Path):
         val_loss.append(float(v[i][0]))
         val_acc.append(float(v[i][1]))
 
-    # Test sonucu:
-    # TEST -> Loss: 0.5421 | Accuracy: 0.8016
+    
+
     test_re = re.compile(r"TEST.*Loss:\s*([0-9.]+)\s*\|\s*Acc(?:uracy)?:\s*([0-9.]+)")
     test = test_re.findall(text)
     test_loss = float(test[-1][0]) if test else None
@@ -62,7 +59,7 @@ def parse_log(path: Path):
     }
 
 def plot_curves(data, title_prefix, out_prefix):
-    # LOSS grafiği
+    
     plt.figure()
     plt.plot(data["epochs"], data["train_loss"], label="Train Loss")
     plt.plot(data["epochs"], data["val_loss"], label="Val Loss")
@@ -85,7 +82,7 @@ def plot_curves(data, title_prefix, out_prefix):
     plt.close()
 
 def main():
-    # Burayı kendi dosya adlarına göre düzenleyebilirsin:
+    
     candidates = list(RESULTS.glob("*log*.txt"))
     if not candidates:
         raise FileNotFoundError("results/ içinde log*.txt bulunamadı.")

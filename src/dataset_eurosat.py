@@ -9,10 +9,7 @@ from .config import BATCH_SIZE, IMAGE_SIZE
 
 
 class EuroSATSubset(Dataset):
-    """
-    HuggingFace EuroSAT datasetinin belirli index aralığını temsil eden
-    PyTorch Dataset wrapperi.
-    """
+
     def __init__(self, hf_dataset, indices, transform=None):
         self.hf_dataset = hf_dataset
         self.indices = indices
@@ -25,10 +22,9 @@ class EuroSATSubset(Dataset):
         real_idx = int(self.indices[idx])
         sample = self.hf_dataset[real_idx]
 
-        image = sample["image"]   # PIL Image veya np.array
-        label = sample["label"]   # int
+        image = sample["image"]   
+        label = sample["label"]  
 
-        # Bazı durumlarda image np.array gelebilir, garanti için PIL'e çeviriyoruz
         if isinstance(image, np.ndarray):
             image = Image.fromarray(image)
 
@@ -70,7 +66,7 @@ def get_dataloaders():
     Toplam: 27000
     """
     print("✅ EuroSAT RGB dataset indiriliyor / yükleniyor...")
-    ds = load_dataset("timm/eurosat-rgb")  # DatasetDict: train/validation/test
+    ds = load_dataset("timm/eurosat-rgb")  
 
     train_hf = ds["train"]
     val_hf = ds["validation"]
@@ -92,7 +88,7 @@ def get_dataloaders():
     val_dataset = EuroSATSubset(val_hf, val_indices, transform=val_transform)
     test_dataset = EuroSATSubset(test_hf, test_indices, transform=test_transform)
 
-    # MacOS + M1 stabilitesi için num_workers=0, pin_memory=False
+    
     train_loader = DataLoader(
         train_dataset,
         batch_size=BATCH_SIZE,

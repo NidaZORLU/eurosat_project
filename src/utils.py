@@ -2,7 +2,7 @@ import torch
 
 
 def accuracy_from_logits(logits, labels):
-    """accuracy hesabı"""
+   
     preds = torch.argmax(logits, dim=1)
     correct = (preds == labels).sum().item()
     return correct / labels.size(0)
